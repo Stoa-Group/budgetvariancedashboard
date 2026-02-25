@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5, user-scalable=yes"/>
+  <meta name="theme-color" content="#7e8a6b"/>
+  <title>T12 vs Budget — Stoa Group</title>
+  <script>(function(){var w=window,d=document.documentElement;var m=w.matchMedia&&w.matchMedia('(max-width:768px)').matches||('ontouchstart'in w)||(w.innerWidth<=768);d.setAttribute('data-mobile',m?'true':'false');w.IS_MOBILE=m;})();</script>
+  <link rel="stylesheet" href="app.css"/>
+
+  <!-- Domo utils -->
+  <script src="https://unpkg.com/ryuu.js@4.6.0/dist/domo.js"
+          integrity="sha384-YYsd9wQ+wDlUWhvpfGdptxmNYIqBC+52oJtWgPKJadbs3sSFTY/+ZotPbEHTTRWz"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-left">
+      <div>
+        <h1>T12 vs Budget</h1>
+        <div id="lastUpdated" class="subtle">Loading…</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button id="exportBtn" class="btn btn-small" title="Export currently filtered rows to CSV">Export CSV</button>
+      <span class="badge" title="Stoa Group">Stoa Group</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <!-- Filters -->
+    <section class="section">
+      <div class="section-title">Filters</div>
+      <div class="toolbar" id="toolbar">
+        <div class="ctrl property-multiselect-wrapper">
+          <label>Property</label>
+          <div class="property-multiselect">
+            <button type="button" class="property-multiselect-trigger" id="propTrigger">
+              <span id="propDisplay">All Properties</span>
+              <span class="property-multiselect-arrow">▼</span>
+            </button>
+            <div class="property-multiselect-dropdown" id="propDropdown" style="display: none;">
+              <div class="property-multiselect-actions">
+                <button type="button" class="property-action-btn" id="propSelectAll">Select All</button>
+                <button type="button" class="property-action-btn" id="propClearAll">Clear Selections</button>
+              </div>
+              <div class="property-multiselect-search">
+                <input type="text" id="propSearch" placeholder="Search properties..." autocomplete="off">
+              </div>
+              <div class="property-multiselect-list" id="propList"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ctrl month-selector-wrapper">
+          <label>Month</label>
+          <div class="month-selector">
+            <button id="monthPrev" class="month-nav" title="Previous month" aria-label="Previous month">‹</button>
+            <select id="month" class="month-dropdown select"></select>
+            <button id="monthNext" class="month-nav" title="Next month" aria-label="Next month">›</button>
+          </div>
+        </div>
+
+        <div class="ctrl">
+          <label>Variance Minimum ($)</label>
+          <input id="minVar" type="number" step="100" value="0" class="input">
+        </div>
+
+        <div class="ctrl">
+          <label>Variance Minimum (%)</label>
+          <input id="minPct" type="number" step="0.1" value="0" class="input">
+        </div>
+
+        <div class="ctrl search">
+          <label>Search (Category / GL)</label>
+          <input id="q" type="text" placeholder="Type to filter…" class="input">
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Filters -->
+    <section class="section">
+      <div class="quick-filters" id="quickFilters">
+        <span class="quick-filters-label">Quick filters:</span>
+        <button type="button" class="quick-filter-btn" data-var="0" data-pct="0">All Variances</button>
+        <button type="button" class="quick-filter-btn" data-var="5000" data-pct="0">$5K+</button>
+        <button type="button" class="quick-filter-btn" data-var="10000" data-pct="0">$10K+</button>
+        <button type="button" class="quick-filter-btn" data-var="25000" data-pct="0">$25K+</button>
+        <button type="button" class="quick-filter-btn" data-var="0" data-pct="10">10%+</button>
+        <button type="button" class="quick-filter-btn" data-var="0" data-pct="25">25%+</button>
+      </div>
+    </section>
+
+    <!-- Summary KPIs -->
+    <section class="section">
+      <div class="section-title">Summary</div>
+      <div id="summary" class="summary-grid"></div>
+    </section>
+
+    <!-- Insights -->
+    <section class="section" id="insightsPanel"></section>
+
+    <!-- Top Variances -->
+    <section class="section">
+      <div class="panel">
+        <div class="panel-title">Top Variances (by absolute variance)</div>
+        <ol id="movers"></ol>
+      </div>
+    </section>
+
+    <!-- Main table (breadcrumbs #crumbbar inserted by JS before #board) -->
+    <section class="section">
+      <div class="board-panel board" id="board">
+        <div class="hint">Loading…</div>
+      </div>
+    </section>
+
+    <footer class="page-footer" id="footer"></footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
