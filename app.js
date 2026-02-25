@@ -198,7 +198,8 @@ function propertyMeta(rows){
    4) Data: fetch via alias
    ========================= */
 async function fetchRowsByAlias(alias){
-  const LIMIT = 50000;
+  // Use 10k limit – some Domo datasets return 400 for limit=50000
+  const LIMIT = 10000;
   let offset = 0, all = [];
 
   // Omit fields param to avoid 400 from schema mismatches (dataset column names vary)
