@@ -1,0 +1,50 @@
+# Publish to Domo when code is pushed to main
+name: Publish to Domo
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Domo CLI (ryuu)
+        run: npm install -g ryuu
+
+      - name: Fix ryuu inquirer dependency
+        run: cd $(npm root -g)/ryuu && npm install inquirer --save || true
+
+      - name: Login to Domo
+        env:
+          DOMO_INSTANCE: ${{ secrets.DOMO_INSTANCE }}
+          DOMO_TOKEN: ${{ secrets.DOMO_TOKEN || secrets.DOMO_ACCESS_TOKEN }}
+          DOMO_CLIENT_ID: ${{ secrets.DOMO_CLIENT_ID }}
+          DOMO_CLIENT_SECRET: ${{ secrets.DOMO_CLIENT_SECRET }}
+        run: |
+          if [ -n "$DOMO_TOKEN" ]; then
+            domo login -i "$DOMO_INSTANCE" -t "$DOMO_TOKEN"
+          elif [ -n "$DOMO_CLIENT_ID" ] && [ -n "$DOMO_CLIENT_SECRET" ]; then
+            TOKEN=$(curl -s -X GET "https://api.domo.com/oauth/token?grant_type=client_credentials&scope=data%20user%20dashboard%20audit" \
+              -u "${DOMO_CLIENT_ID}:${DOMO_CLIENT_SECRET}" | jq -r '.access_token')
+            if [ -z "$TOKEN" ] || [ "$TOKEN" = "null" ]; then
+              echo "Failed to get access token from client credentials"
+              exit 1
+            fi
+            domo login -i "$DOMO_INSTANCE" -t "$TOKEN"
+          else
+            echo "Set DOMO_TOKEN, DOMO_ACCESS_TOKEN, or DOMO_CLIENT_ID+DOMO_CLIENT_SECRET in repo/org secrets"
+            exit 1
+          fi
+
+      - name: Publish to Domo
+        run: domo publish
+        working-directory: .
