@@ -655,3 +655,48 @@ td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-n
 .hide { display: none !important; }
 .center { text-align: center; }
 .right { text-align: right; }
+
+/* Aggressive compact mode for small screens */
+@media (max-width: 1024px) {
+  button, .seg-btn, .tab, .tab-main, .pill, select, .home-btn, .back-btn, .export-pdf-btn {
+    min-height: 30px;
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+
+  .kpi-card, .kpi, .metric-card, .panel {
+    padding: 10px;
+    min-height: 80px;
+  }
+
+  .kpi-value, .metric-value {
+    font-size: clamp(18px, 5.5vw, 24px);
+    line-height: 1.1;
+  }
+
+  .kpi-label, .metric-label, .panel-title {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 768px) {
+  .kpi-grid, .metrics-grid, .analytics-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .property-header .meta span {
+    font-size: 11px;
+    margin-right: 8px;
+  }
+}
+
+@media (max-width: 520px) {
+  .kpi-grid, .metrics-grid, .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kpi-card, .kpi, .metric-card, .panel {
+    min-height: 72px;
+  }
+}
