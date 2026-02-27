@@ -659,35 +659,35 @@ td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-n
 /* Aggressive compact mode for small screens */
 @media (max-width: 1024px) {
   button, .seg-btn, .tab, .tab-main, .pill, select, .home-btn, .back-btn, .export-pdf-btn {
-    min-height: 30px;
-    padding: 4px 8px;
-    font-size: 12px;
+    min-height: 28px;
+    padding: 4px 6px;
+    font-size: 11px;
   }
 
   .kpi-card, .kpi, .metric-card, .panel {
-    padding: 10px;
-    min-height: 80px;
+    padding: 8px;
+    min-height: 70px;
   }
 
   .kpi-value, .metric-value {
-    font-size: clamp(18px, 5.5vw, 24px);
-    line-height: 1.1;
+    font-size: clamp(17px, 5vw, 22px);
+    line-height: 1.05;
   }
 
   .kpi-label, .metric-label, .panel-title {
-    font-size: 11px;
+    font-size: 10px;
   }
 }
 
 @media (max-width: 768px) {
   .kpi-grid, .metrics-grid, .analytics-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    gap: 6px;
   }
 
   .property-header .meta span {
-    font-size: 11px;
-    margin-right: 8px;
+    font-size: 10px;
+    margin-right: 6px;
   }
 }
 
@@ -697,6 +697,50 @@ td.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-n
   }
 
   .kpi-card, .kpi, .metric-card, .panel {
-    min-height: 72px;
+    min-height: 60px;
+  }
+}
+
+
+/* === Apple-like UI polish === */
+:root {
+  --card-radius: 16px;
+  --card-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+  --card-border: rgba(15, 23, 42, 0.08);
+}
+
+.kpi-card, .kpi, .metric-card, .panel, .card {
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+  background: #fff;
+}
+
+.kpi-value, .metric-value {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.kpi-label, .metric-label, .panel-title {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.property-header h2,
+.detail-title,
+.page-title {
+  letter-spacing: -0.01em;
+}
+
+/* Smaller screens: tighter cards + cleaner layout */
+@media (max-width: 900px) {
+  .kpi-card, .kpi, .metric-card, .panel, .card {
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.08);
+  }
+
+  .kpi-value, .metric-value {
+    font-size: clamp(18px, 5.5vw, 26px);
   }
 }

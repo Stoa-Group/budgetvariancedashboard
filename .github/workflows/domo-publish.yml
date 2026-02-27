@@ -18,7 +18,10 @@ jobs:
           node-version: "20"
 
       - name: Install Domo CLI (ryuu)
-        run: npm install -g ryuu
+        run: |
+          npm cache clean --force
+          npm install -g ryuu --prefer-online --no-audit --no-fund || \
+          npm install -g ryuu --registry https://registry.npmmirror.com --prefer-online --no-audit --no-fund
 
       - name: Fix ryuu inquirer dependency
         run: cd $(npm root -g)/ryuu && npm install inquirer --save || true
